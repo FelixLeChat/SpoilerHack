@@ -2,20 +2,36 @@
   "name": "Spoiler Detector",
   "description": "This extension hide spoiler in the current webpage.",
   "version": "1.0",
+
+  // permissions for the Add-on
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage",
+    "http://*/"
   ],
 
+  // Change add-on background on click
+  /*"background": { 
+    "scripts": ["background.js"] 
+  },*/
+
   "browser_action": {
-    "default_icon": "SpoilerAlert.png",
-    "default_title": "Hide Spoilers"
+    "default_icon": "Spoiler.png",
+    "default_title": "Hide Spoilers",
+    // Popup on chrome extention click
+    "default_popup": "popup.html"
   },
 
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
       "css": ["style.css"],
-      "js": ["jquery.js", "script.js"]
+      "js": ["jquery.js", "visibility.js", "script.js"]
+    },
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["jquery.js", "visibility.js", "startScript.js"],
+      "run_at": "document_start"
     }
   ],
 
