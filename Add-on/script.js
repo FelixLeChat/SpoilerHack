@@ -36,24 +36,25 @@ function BasicCheck(spoilerPhrase){
     }
     return spoilerPhrase;
 }
+chrome.storage.sync.get('enable', function(val){
+	if(val['enable']) {
+		// Hide in all sort of div
+		HideSpoiler($("p"));
+		//HideSpoiler($("h1"));
+		//HideSpoiler($("h2"));
+		//HideSpoiler($("h3"));
+		//HideSpoiler($("span"));
+		//HideSpoiler($("li"));
+		//HideSpoiler($("a"));
+		//HideSpoiler($("div"));
+		//HideSpoiler($("code"));
+		//HideSpoiler($("label"));
+		//HideSpoiler($("input"));
 
-
-// Hide in all sort of div
-HideSpoiler($("p"));
-//HideSpoiler($("h1"));
-//HideSpoiler($("h2"));
-//HideSpoiler($("h3"));
-//HideSpoiler($("span"));
-//HideSpoiler($("li"));
-//HideSpoiler($("a"));
-//HideSpoiler($("div"));
-//HideSpoiler($("code"));
-//HideSpoiler($("label"));
-//HideSpoiler($("input"));
-
-// Show transformed page
-$("html").visible();
-
+		// Show transformed page
+		$("html").visible();
+	}
+});
 
 /* Get request
 var xhr = new XMLHttpRequest();
