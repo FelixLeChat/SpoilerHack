@@ -1,0 +1,23 @@
+{
+  "name": "Spoiler Detector",
+  "description": "This extension hide spoiler in the current webpage.",
+  "version": "1.0",
+  "permissions": [
+    "activeTab"
+  ],
+
+  "browser_action": {
+    "default_icon": "SpoilerAlert.png",
+    "default_title": "Hide Spoilers"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "css": ["style.css"],
+      "js": ["jquery.js", "script.js"]
+    }
+  ],
+
+  "manifest_version": 2
+}
