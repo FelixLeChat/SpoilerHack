@@ -30,8 +30,9 @@ function HideSpoiler(domElementList){
                     }
                 }
 
-                if(!blockPhrase)
+                if(!blockPhrase){
                     text += BasicCheck(spoilerPhrase);
+				}
             }
 
             if(text != "")
@@ -43,15 +44,23 @@ function HideSpoiler(domElementList){
 
 // Basic function to hide phrases with certains words in them
 function BasicCheck(spoilerPhrase){
-    var spoilers = [" die "," death"," kill"," revealed "," turns out "," ending "," finale"," out that "," sex "," kiss"];
+    var spoilers = ["die","death","kill","reveal",'curse'," turns out "," ending "," out that "," sex "," kiss", 'ressurect', 'confrontation', 'evil', 'defeat', 'enroll', 'killing', 'child', 'marries', 'murder', 'dating', 'destroy'];
+	var characters = ['harry', 'potter', 'ron', 'weasley', 'hermione', 'granger', 'lord', 'voldemort', 'albus', 'dumbledore',"dumbledore's", 'severus', 'snape', 'rubeus', 'hagrid', 'draco', 'malfoy', "supporting hogwarts staff", "order of the phoenix dumbledore's", 'death daters', 'ginny', 'horecrux']
 
     var spoilerHeader = "<div class=\"spoiler\">";
     var spoilerFooter = "</div>";
 
     // check spoiler list
     for(var i=0; i < spoilers.length; i++){
-        if(spoilerPhrase.toLowerCase().indexOf(spoilers[i]) > -1)
-            return spoilerHeader + spoilerPhrase + spoilerFooter;
+        if(spoilerPhrase.toLowerCase().indexOf(spoilers[i]) > -1){
+			for(var j = 0; j < characters.length; j++) {
+				if(spoilerPhrase.toLowerCase().indexOf(characters[j]) > -1){
+					return spoilerHeader + spoilerPhrase + spoilerFooter;
+				}
+			}
+		}
+		
+
     }
     return spoilerPhrase;
 }
@@ -69,6 +78,7 @@ chrome.storage.sync.get('enable', function(val){
 
 		// Hide in all sort of div
 		HideSpoiler($("p"));
+		//HideSpoiler($('a'));
 		//HideSpoiler($("h1"));
 		//HideSpoiler($("h2"));
 		//HideSpoiler($("h3"));
