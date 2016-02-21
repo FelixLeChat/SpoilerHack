@@ -4,21 +4,21 @@ function HideSpoiler(domElementList){
 
     chrome.storage.local.get({block: []}, function (result) {
         var userList = result.block;
-        console.log(userList);
 
       for ( var i = 0; i < domElementList.length; i++ ){
         var html = domElementList[i].innerHTML;
 
         // parse HTML to find phrases
         var phrases =  html.match(/([^.,?!;:-]+[.,?!;:-])/g);
+		phrases = String(phrases).split('<').join('').split('"').join('').split('>');
         var text = "";
 
 
 
         if(phrases != null){
             for(var j = 0; j < phrases.length; j++){
-		  		var spoilerPhrase = phrases[j];
-		  		$.get("http://localhost:8080/v1/functions/princess_classifier_api/application?input={x:'"+spoilerPhrase+"'}", function(val) {
+		  		var spoilerPhrase = phrases[j].trim();
+		  		$.get('http://localhost:8080/v1/functions/princess_classifier_api/application?input={"x":"'+spoilerPhrase+'"}', function(val) {
 
                 // TODO : Check for spoiler in phrase
 
@@ -33,10 +33,10 @@ function HideSpoiler(domElementList){
                         k = userList.length;
                     }
                 }
-
-				if(val.output.spoiler[1][0] > -0.2637063264846802 && !blockPhrase) {
+				if(val != undefined && val.output.spoiler[0][1] > -0.2637063264846802 && !blockPhrase) {
 					text += "<div class=\"spoiler\">" + spoilerPhrase + "</div>";
 					blockPhrase = true;
+					alert(text)
 				}
 
 
@@ -45,7 +45,7 @@ function HideSpoiler(domElementList){
 				}
 
 
-	            if(text != "")
+	            if(text)
     	            domElementList[i].innerHTML = text;
 				});
 			}
@@ -97,7 +97,7 @@ chrome.storage.sync.get('enable', function(val){
 		//HideSpoiler($("h2"));
 		//HideSpoiler($("h3"));
 		//HideSpoiler($("span"));
-		HideSpoiler($("ul"));
+		//HideSpoiler($("ul"));
 		//HideSpoiler($("a"));
 		//HideSpoiler($("div"));
 		//HideSpoiler($("code"));
