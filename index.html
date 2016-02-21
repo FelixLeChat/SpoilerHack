@@ -8,7 +8,6 @@
 			var form = document.getElementById('message-form');
 			var messageField = document.getElementById('message');
 			var socketStatus = document.getElementById('status');
-			var updateStatus = document.getElementById('update');
 			var hashtaglist = document.getElementById('hashtagList');
 			var hashlist = [];
 
@@ -28,9 +27,10 @@
 			// Handle messages sent by the server.
 			socket.onmessage = function(event) {
 				var data = JSON.parse(event.data);
-				//console.log(data);
+				console.log(data);
 				
-				$('.row').append('<div class="col-sm-6">'+data.id+'</div>');
+				if(data != undefined)
+					$('#row').html('<li>'+data+'</li>' + $('#row').html());
 
 			};
 			// Show a disconnected message when the WebSocket is closed.
@@ -62,7 +62,7 @@
 				// Remove button on click
 				$( ".btn" ).click(function() {
 					var html = $( this ).html();
-					var matches = html.match(/([^<]+)</g);
+					var matches = html.match(/([^<]+)/g);
 
 					console.log(html);
 					console.log(matches);
@@ -71,7 +71,7 @@
 					{
 						var index = hashlist.indexOf(matches[0])
 						if (index > -1) {
-						    array.splice(index, 1);
+						    hashlist.splice(index, 1);
 						}
 					}
 
@@ -85,10 +85,10 @@
 			// get new tweets each 5 sec
 			setInterval(function()
 			{
-				//console.log("1 sec elapsed");
-				socket.send(JSON.stringify({
-				  id: "muahaha"
-				}));
+				// send hashtag to get notif from
+				var message = JSON.stringify({id: hashlist});
+				console.log(message);
+				socket.send(message);
 			}, 1000);
 		};
 	</script>
@@ -98,7 +98,6 @@
 	<h1>Twitter Spoiler Alert</h1>
 
 	<div id="status">Connecting...</div>
-	<div id="update">Waiting for input...</div>
 
 	<form id="message-form" action="#" method="post">
 		<input type="text" id="message" placeholder="Write the # to watch" required>
@@ -109,5 +108,5 @@
 </div>
 <div id="page-wrapper">
 	<h2>Previous :</h2>
-	<div id="row"></div>
+	<ul id="row"></ul>
 </div>

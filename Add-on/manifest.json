@@ -8,12 +8,13 @@
     "activeTab",
     "storage",
     "tabs",
+    "contextMenus",
     "http://*/"
   ],
 
   // Change add-on background on click
   "background": {
-    "scripts": ["background.js"]
+    "page": "background.html"
   },
 
   "browser_action": {

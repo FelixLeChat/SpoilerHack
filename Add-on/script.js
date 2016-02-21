@@ -2,34 +2,53 @@
 // parse given dom element into phrases and then hide content if they contain spoilers
 function HideSpoiler(domElementList){
 
-  for ( var i = 0; i < domElementList.length; i++ ){
-    var html = domElementList[i].innerHTML;
+    chrome.storage.local.get({block: []}, function (result) {
+        var userList = result.block;
+        console.log(userList);
 
-    // parse HTML to find phrases
-    var phrases =  html.match(/([^.,?!;:-]+[.,?!;:-])/g);
-    var text = "";
+      for ( var i = 0; i < domElementList.length; i++ ){
+        var html = domElementList[i].innerHTML;
 
-    if(phrases != null){
-        for(var j = 0; j < phrases.length; j++){
+        // parse HTML to find phrases
+        var phrases =  html.match(/([^.,?!;:-]+[.,?!;:-])/g);
+        var text = "";
 
-            // TODO : Check for spoiler in phrase
-            var spoilerPhrase = phrases[j];
-            text += BasicCheck(spoilerPhrase);
+        if(phrases != null){
+            for(var j = 0; j < phrases.length; j++){
+
+                // TODO : Check for spoiler in phrase
+                var spoilerPhrase = phrases[j];
+                var blockPhrase = false;
+
+                // Check for user blocked list
+                for(var k=0; k < userList.length; k++){
+                    if(spoilerPhrase.indexOf(userList[k]) > -1)
+                    {
+                        text += "<div class=\"spoiler\">" + spoilerPhrase + "</div>";
+                        blockPhrase = true;
+                        k = userList.length;
+                    }
+                }
+
+                if(!blockPhrase)
+                    text += BasicCheck(spoilerPhrase);
+            }
+
+            if(text != "")
+                domElementList[i].innerHTML = text;
+          }
         }
-
-        if(text != "")
-            domElementList[i].innerHTML = text;
-      }
-    }
+            });
 }
 
 // Basic function to hide phrases with certains words in them
 function BasicCheck(spoilerPhrase){
-    var spoilers = [" die "," death"," kill"," revealed "," turns out "," ending "," finale"," out that "," sex"," kiss"];
+    var spoilers = [" die "," death"," kill"," revealed "," turns out "," ending "," finale"," out that "," sex "," kiss"];
 
     var spoilerHeader = "<div class=\"spoiler\">";
     var spoilerFooter = "</div>";
 
+    // check spoiler list
     for(var i=0; i < spoilers.length; i++){
         if(spoilerPhrase.toLowerCase().indexOf(spoilers[i]) > -1)
             return spoilerHeader + spoilerPhrase + spoilerFooter;
@@ -41,13 +60,6 @@ function CheckSpoiler(phrase)
 {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "https://www.example.com/", false);
-
-    /*xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4) {
-        // innerText does not let the attacker inject HTML elements.
-        console.log(xhr.responseText);
-      }
-    }*/
     xhr.send();
     return xhr.responseText;
 }
