@@ -2,6 +2,63 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript" src="script/jquery.js"></script>
 	<script>
+			// parse given dom element into phrases and then hide content if they contain spoilers
+		function HideSpoiler(domElementList){
+
+			console.log(domElementList);
+
+		      for ( var i = 0; i < domElementList.length; i++ ){
+		        var html = domElementList[i].outerText;
+
+		        console.log(html);
+
+		        // parse HTML to find phrases
+		        var phrases =  html.match(/([^.,?!;:-]+)/g);
+		        var text = "";
+
+		        if(phrases != null){
+		            for(var j = 0; j < phrases.length; j++){
+
+		            	console.log(phrases[i]);
+
+		                // TODO : Check for spoiler in phrase
+		                var spoilerPhrase = phrases[j];
+		                var blockPhrase = false;
+
+		                text += BasicCheck(spoilerPhrase);
+		            }
+
+		            if(text != "")
+		                domElementList[i].innerHTML = text;
+		          }
+		        }
+		}
+
+		// Basic function to hide phrases with certains words in them
+		function BasicCheck(spoilerPhrase){
+		    var spoilers = ["die","death","kill","reveal",'curse'," turns out "," ending "," out that "," sex "," kiss", 'ressurect', 'confrontation', 'evil', 'defeat', 'enroll', 'killing', 'child', 'marries', 'murder', 'dating', 'destroy'];
+			var characters = ['harry', 'potter', 'ron', 'weasley', 'hermione', 'granger', 'lord', 'voldemort', 'albus', 'dumbledore',"dumbledore's", 'severus', 'snape', 'rubeus', 'hagrid', 'draco', 'malfoy', "supporting hogwarts staff", "order of the phoenix dumbledore's", 'death daters', 'ginny', 'horecrux']
+
+		    var spoilerHeader = "<div class=\"spoiler\">";
+		    var spoilerFooter = "</div>";
+
+		    console.log(spoilerPhrase);
+
+		    // check spoiler list
+		    for(var i=0; i < spoilers.length; i++){
+		        if(spoilerPhrase.toLowerCase().indexOf(spoilers[i]) > -1){
+					//for(var j = 0; j < characters.length; j++) {
+						//if(spoilerPhrase.toLowerCase().indexOf(characters[j]) > -1){
+							return spoilerHeader + spoilerPhrase + spoilerFooter;
+						//}
+					//}
+				}
+				
+
+		    }
+		    return spoilerPhrase;
+		}
+
 		window.onload = function() {
 
 			// Get references to elements on the page.
@@ -11,9 +68,19 @@
 			var hashtaglist = document.getElementById('hashtagList');
 			var hashlist = [];
 
-			// Create a new WebSocket.
-			var socket = new WebSocket('ws://websocket-spoileralert.herokuapp.com');
+			var names = [];
+			if(localStorage["names"] == undefined)
+				localStorage["names"] = JSON.stringify(names);
 
+			var storedNames = JSON.parse(localStorage["names"]);
+			for (var i = storedNames.length - 1; i >= 0; i--) {
+				$('#row').html('<li><p>'+storedNames[i]+'</p></li>' + $('#row').html());
+			};
+
+
+			// Create a new WebSocket.
+			//var socket = new WebSocket('ws://websocket-spoileralert.herokuapp.com');
+			/*var socket = new WebSocket('ws://localhost:5000');
 
 			// Handle any errors that occur.
 			socket.onerror = function(error) {
@@ -39,7 +106,7 @@
 			socket.onclose = function(event) {
 				socketStatus.innerHTML = 'Disconnected from server.';
 				socketStatus.className = 'closed';
-			};
+			};*/
 
 
 			// Send a message when the form is submitted.
@@ -51,58 +118,39 @@
 				messageField.value = "";
 				message = message.toLowerCase();
 
-				if(hashlist.indexOf(message) >= 0)
-				{
-					return;
-				}
-					
-				hashlist.push(message);
+				storedNames.push(message);
+				localStorage["names"] = JSON.stringify(storedNames);
 
-				// Add button for each tag
-				$("#hashtagList").append("<button class=\"btn btn-primary\" type=\"button\">" + message + "<span class=\"badge\" class=\"badgeclick\">   X</span></button>");
+				$('#row').html('<li><p>'+message+'</p></li>' + $('#row').html());
 
-				// Remove button on click
-				$( ".btn" ).click(function() {
-					var html = $( this ).html();
-					var matches = html.match(/([^<]+)/g);
-
-					if(matches != null && hashlist.indexOf(matches[0]) >= 0)
-					{
-						var index = hashlist.indexOf(matches[0])
-						if (index > -1) {
-						    hashlist.splice(index, 1);
-						}
-					}
-
-					$( this ).remove();
-				});
+				HideSpoiler($("p"));
+				//location.reload();
 				return false;
 			};
 
-			// get new tweets each 5 sec
-			setInterval(function()
-			{
-				// send hashtag to get notif from
-				var message = JSON.stringify({ids: hashlist});
-				socket.send(message);
-			}, 1000);
+			HideSpoiler($("p"));
 		};
+
+
+		$("#row").bind("DOMSubtreeModified", function() {
+		    HideSpoiler($("p"));
+		});
+		
 	</script>
 </head>
 
 <div id="page-wrapper">
 	<h1>Twitter Spoiler Alert</h1>
 
-	<div id="status">Connecting...</div>
 
 	<form id="message-form" action="#" method="post">
 		<input type="text" id="message" placeholder="Write the # to watch" required>
-		<button type="submit">Add #</button>
+		<button type="submit">Add</button>
 	</form>
 
 	<div id="hashtagList"></div>
 </div>
 <div id="page-wrapper">
-	<h2>Previous :</h2>
+	<h2>Spoilers :</h2>
 	<ul id="row"></ul>
 </div>
