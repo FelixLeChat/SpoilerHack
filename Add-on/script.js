@@ -36,8 +36,10 @@ function BasicCheck(spoilerPhrase){
     }
     return spoilerPhrase;
 }
+
 chrome.storage.sync.get('enable', function(val){
 	if(val['enable']) {
+
 		// Hide in all sort of div
 		HideSpoiler($("p"));
 		//HideSpoiler($("h1"));

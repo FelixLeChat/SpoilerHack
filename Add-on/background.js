@@ -1,25 +1,31 @@
-var IsEnabled = false;
 var EnabledImage = "Spoiler.png";
 var DisabledImage = "SpoilerDis.png";
 
 function updateIcon() {
+
+	// Change local storage value for enabled
 	chrome.storage.sync.get('enable', function(val) {
 		toggle = !val['enable'];
-		if(toggle) {
-			// caller le script pour tout cacher
-		}
 		chrome.storage.sync.set({'enable':toggle});
-		alert(val['enable']);
-	});
-	//IsEnabled = !IsEnabled;
-	//var path = DisabledImage;
-	//if(IsEnabled)
-	//	path = EnabledImage;*/
+		//alert(val['enable']);
 
-	//chrome.browserAction.setIcon({path:path});
+		// reload tabs
+		chrome.tabs.reload();
+
+		// Change icon
+		if(toggle){
+			chrome.browserAction.setIcon({path:{
+			    19: "SP19.png",
+			    38: "SP38.png"
+			}});
+		}
+		else{
+			chrome.browserAction.setIcon({path:{
+			    19: "SPD19.png",
+			    38: "SPD38.png"
+			}});
+		}
+	});
 }
 
-
-
 chrome.browserAction.onClicked.addListener(updateIcon);
-
