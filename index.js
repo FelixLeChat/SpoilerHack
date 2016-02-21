@@ -33,7 +33,7 @@ request(
             formData : "grant_type=client_credentials"
         },
         function (error, response, body) {
-          AppToken = JSON.parse(response);
+          AppToken = response;
         }
     );
 
