@@ -13,11 +13,15 @@ function HideSpoiler(domElementList){
         var phrases =  html.match(/([^.,?!;:-]+[.,?!;:-])/g);
         var text = "";
 
+
+
         if(phrases != null){
             for(var j = 0; j < phrases.length; j++){
+		  		var spoilerPhrase = phrases[j];
+		  		$.get("http://localhost:8080/v1/functions/princess_classifier_api/application?input={'x':"+phrase+"})", function(val) {
 
                 // TODO : Check for spoiler in phrase
-                var spoilerPhrase = phrases[j];
+
                 var blockPhrase = false;
 
                 // Check for user blocked list
@@ -30,6 +34,12 @@ function HideSpoiler(domElementList){
                     }
                 }
 
+				if(val.output.spoiler[1][0] > -0.2637063264846802 && !blockPhrase) {
+					text += "<div class=\"spoiler\">" + spoilerPhrase + "</div>";
+					blockPhrase = true;
+				}
+
+
                 if(!blockPhrase){
                     text += BasicCheck(spoilerPhrase);
 				}
@@ -37,6 +47,7 @@ function HideSpoiler(domElementList){
 
             if(text != "")
                 domElementList[i].innerHTML = text;
+			});
           }
         }
             });
