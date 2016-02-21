@@ -7,68 +7,27 @@
 			var form = document.getElementById('message-form');
 			var messageField = document.getElementById('message');
 			var socketStatus = document.getElementById('status');
-			var closeBtn = document.getElementById('close');
 			var updateStatus = document.getElementById('update');
-			var winner = document.getElementById('winner');
-
-			// result references
-			var upResult = document.getElementById('up');
-			var downResult = document.getElementById('down');
-			var leftResult = document.getElementById('left');
-			var rightResult = document.getElementById('right');
-			var forwardResult = document.getElementById('forward');
-			var backwardResult = document.getElementById('backward');
-
-			// last inserted references
-			var ml1 = document.getElementById('messageList1');
-			var ml2 = document.getElementById('messageList2');
-			var ml3 = document.getElementById('messageList3');
-			var ml4 = document.getElementById('messageList4');
-			var ml5 = document.getElementById('messageList5');
-
+			var hashtaglist = document.getElementById('hashtagList');
+			var list = [];
 
 			// Create a new WebSocket.
-			var socket = new WebSocket('ws://websocket-nodejs.herokuapp.com');
+			var socket = new WebSocket('ws://websocket-spoileralert.herokuapp.com');
 
 
 			// Handle any errors that occur.
 			socket.onerror = function(error) {
 				console.log('WebSocket Error: ' + error);
 			};
-
-
 			// Show a connected message when the WebSocket is opened.
 			socket.onopen = function(event) {
 				socketStatus.innerHTML = 'Connected to server.';
 				socketStatus.className = 'open';
 			};
-
-
 			// Handle messages sent by the server.
 			socket.onmessage = function(event) {
 				var data = JSON.parse(event.data);
-
-				if(data.message.indexOf("WINNER:") > -1) {
-					var result = data.message.split(":");
-					winner.innerHTML = result[1];
-				} else {
-					// iteratively update list
-					ml5.innerHTML = ml4.innerHTML;
-					ml4.innerHTML = ml3.innerHTML;
-					ml3.innerHTML = ml2.innerHTML;
-					ml2.innerHTML = ml1.innerHTML;
-					ml1.innerHTML = "<span>Received:</span>" + data.message;
-				}
-				// update counts
-				upResult.innerHTML = data.up;
-				downResult.innerHTML = data.down;
-				leftResult.innerHTML = data.left;
-				rightResult.innerHTML = data.right;
-				forwardResult.innerHTML = data.forward;
-				backwardResult.innerHTML = data.backward;
 			};
-
-
 			// Show a disconnected message when the WebSocket is closed.
 			socket.onclose = function(event) {
 				socketStatus.innerHTML = 'Disconnected from server.';
@@ -80,47 +39,16 @@
 			form.onsubmit = function(e) {
 				e.preventDefault();
 
-				// Retrieve the message from the textarea.
+				// get selected hash
 				var message = messageField.value;
 				message = message.toLowerCase();
 
-				var received = true;
+				List.push(message);
 
-				switch(message)
-				{
-				case "up":
-					break;
-				case "down":
-					break;
-				case "left":
-					break;
-				case "right":
-					break;
-				case "forward":
-					break;
-				case "backward":
-					break;
-				default:
-					received = false;
-					break;
-				}
-
-				if(received)
-				{
-					updateStatus.innerHTML = "Vote successful!";
-					updateStatus.className = 'open';
-					setTimeout(function() {
-					    updateStatus.innerHTML = '&nbsp';
-					}, 2000); 
-					// Send the message through the WebSocket.
-					socket.send(message);
-				} else {
-					updateStatus.innerHTML = "Vote invalid: " + message + " is an invalid choice.";
-					updateStatus.className = 'closed';
-				}
-				
-				// Clear out the message field.
-				messageField.value = '';
+				hashtaglist.append("
+					<button class=\"btn btn-primary\" type=\"button\">"+
+					message + "<span class=\"badge\">X</span>
+					</button>");
 
 				return false;
 			};
@@ -140,49 +68,21 @@
 </head>
 
 <div id="page-wrapper">
-	<h1>Hack Western 2 plays Snake 3D</h1>
+	<h1>Twitter Spoiler Alert</h1>
 
 	<div id="status">Connecting...</div>
-
 	<div id="update">Waiting for input...</div>
 
 	<form id="message-form" action="#" method="post">
-		<input type="text" id="message" placeholder="Write your command here..." required>
-		<button type="submit">Vote</button>
+		<input type="text" id="message" placeholder="Write the # to watch" required>
+		<button type="submit">Add #</button>
 		<button type="button" id="close">Close Connection</button>
 	</form>
+
+	<div id="hashtagList"></div>
 </div>
 <div id="page-wrapper">
-	Previous democratic decision:<b><div id="winner">&nbsp</div></b>
-	<table cellspacing='0'> 
-	<thead>
-		<tr>
-			<th>up</th>
-			<th>down</th>
-			<th>left</th>
-			<th>right</th>
-			<th>forward</th>
-			<th>backward</th>
-		</tr>
-	</thead>
-
-	<tbody>
-		<tr>
-			<td id='up'>&nbsp</td>
-			<td id='down'>&nbsp</td> 
-			<td id='left'>&nbsp</td>
-			<td id='right'>&nbsp</td>
-			<td id='forward'>&nbsp</td> 
-			<td id='backward'>&nbsp</td> 
-		</tr>
-
-	</tbody>
-	</table>
+	Previous :<b><div id="winner">&nbsp</div></b>
 	<ul id="messages">
-		<li class="received" id='messageList1'>&nbsp</li>
-		<li class="received" id='messageList2'>&nbsp</li>
-		<li class="received" id='messageList3'>&nbsp</li>
-		<li class="received" id='messageList4'>&nbsp</li>
-		<li class="received" id='messageList5'>&nbsp</li>
 	</ul>
 </div>
