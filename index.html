@@ -28,9 +28,9 @@
 			// Handle messages sent by the server.
 			socket.onmessage = function(event) {
 				var data = JSON.parse(event.data);
-				console.log(data);
+				//console.log(data);
 				
-				$('#list').append('<li>'+data+'</li>');
+				$('.row').append('<div class="col-sm-6">'+data.id+'</div>');
 
 			};
 			// Show a disconnected message when the WebSocket is closed.
@@ -108,7 +108,6 @@
 	<div id="hashtagList"></div>
 </div>
 <div id="page-wrapper">
-	Previous :<b><div id="winner">&nbsp</div></b>
-	<ul id="messages" class="list">
-	</ul>
+	<h2>Previous :</h2>
+	<div id="row"></div>
 </div>

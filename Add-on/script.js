@@ -75,4 +75,4 @@ chrome.storage.sync.get('enable', function(val){
 
 
 // Check for api
-console.log(CheckSpoiler("John Snow dies."));
+//console.log(CheckSpoiler("John Snow dies."));
