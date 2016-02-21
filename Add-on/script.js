@@ -18,7 +18,7 @@ function HideSpoiler(domElementList){
         if(phrases != null){
             for(var j = 0; j < phrases.length; j++){
 		  		var spoilerPhrase = phrases[j];
-		  		$.get("http://localhost:8080/v1/functions/princess_classifier_api/application?input={'x':"+phrase+"})", function(val) {
+		  		$.get("http://localhost:8080/v1/functions/princess_classifier_api/application?input={'x':"+spoilerPhrase+"})", function(val) {
 
                 // TODO : Check for spoiler in phrase
 
@@ -43,14 +43,15 @@ function HideSpoiler(domElementList){
                 if(!blockPhrase){
                     text += BasicCheck(spoilerPhrase);
 				}
-            }
 
-            if(text != "")
-                domElementList[i].innerHTML = text;
-			});
-          }
-        }
-            });
+
+	            if(text != "")
+    	            domElementList[i].innerHTML = text;
+				});
+			}
+		}
+	}
+	});
 }
 
 // Basic function to hide phrases with certains words in them
