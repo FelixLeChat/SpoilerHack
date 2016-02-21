@@ -16,12 +16,12 @@ console.log("websocket server created ???")
 
 
 // Twitter stuff
-var AccessToken = "2985068194-snwpcRuZIl34Z52Rf4IzHXlhagO4vCBu4FgVLVa";
-var AccessSecret = "nsOFR4Nj2gnkCeozw9Q9CvwjKLUbjmT6BP1HMN5EXZ2yi";
+var AccessToken = "2985068194-snwpcRuZIl34Z52Rf4IzHXlhagO4vCBu4FgVLVa"
+var AccessSecret = "nsOFR4Nj2gnkCeozw9Q9CvwjKLUbjmT6BP1HMN5EXZ2yi"
 
-var request = require('request'),
-    url = "https://api.twitter.com/1.1/search/tweets.json?q=",
-    auth = "Bearer " + AccessToken;
+var request = require('request')
+var url = "https://api.twitter.com/1.1/search/tweets.json?q="
+var auth = "Bearer " + AccessToken
 
 
 wss.on('connection', function connection(ws) {
