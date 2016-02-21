@@ -61,14 +61,16 @@ function BasicCheck(spoilerPhrase){
     var spoilerHeader = "<div class=\"spoiler\">";
     var spoilerFooter = "</div>";
 
+    console.log(spoilerPhrase);
+
     // check spoiler list
     for(var i=0; i < spoilers.length; i++){
         if(spoilerPhrase.toLowerCase().indexOf(spoilers[i]) > -1){
-			for(var j = 0; j < characters.length; j++) {
-				if(spoilerPhrase.toLowerCase().indexOf(characters[j]) > -1){
+			//for(var j = 0; j < characters.length; j++) {
+				//if(spoilerPhrase.toLowerCase().indexOf(characters[j]) > -1){
 					return spoilerHeader + spoilerPhrase + spoilerFooter;
-				}
-			}
+				//}
+			//}
 		}
 		
 
@@ -94,7 +96,7 @@ chrome.storage.sync.get('enable', function(val){
 		//HideSpoiler($("h2"));
 		//HideSpoiler($("h3"));
 		//HideSpoiler($("span"));
-		//HideSpoiler($("li"));
+		HideSpoiler($("ul"));
 		//HideSpoiler($("a"));
 		//HideSpoiler($("div"));
 		//HideSpoiler($("code"));

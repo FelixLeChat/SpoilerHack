@@ -14,72 +14,27 @@ console.log("http server listening on %d", port)
 var wss = new WebSocketServer({server: server})
 console.log("websocket server created ???")
 
-
 // Twitter stuff
-var AccessToken = "2985068194-snwpcRuZIl34Z52Rf4IzHXlhagO4vCBu4FgVLVa"
-var AccessSecret = "nsOFR4Nj2gnkCeozw9Q9CvwjKLUbjmT6BP1HMN5EXZ2yi"
-var AppToken = {};
+//var Twitter = require('twitter');
+ 
+/*var client = new Twitter({
+  consumer_key: 'WxX5Ko3tcueI0Wn4gChWwGoe4',
+  consumer_secret: 'kADoUdCOKQibcTIMDypY2Q3kLxOqWwYGYbcaiNHRuymAIDJ5pb',
+  access_token_key: '2985068194-snwpcRuZIl34Z52Rf4IzHXlhagO4vCBu4FgVLVa',
+  access_token_secret: 'nsOFR4Nj2gnkCeozw9Q9CvwjKLUbjmT6BP1HMN5EXZ2yi'
+});
+client.get('search/tweets', {q: 'node.js'}, function(error, tweets, response){
+   for (var i = tweets.statuses.length - 1; i >= 0; i--) {
+     console.log(tweets.statuses[i].text);
+   };
+});*/
 
-var request = require('request')
-var url = "https://api.twitter.com/1.1/search/tweets.json?q="
-var auth = "Bearer " + AccessToken
-
-request(
-        {
-            url : "https://api.twitter.com/oauth2/token",
-            headers : {
-                "Authorization" : "Basic " + AccessToken
-            },
-            formData : "grant_type=client_credentials"
-        },
-        function (error, response, body) {
-          AppToken = response;
-        }
-    );
 
 wss.on('connection', function connection(ws) {
   console.log("User connected");
   ws.on('message', function incoming(message) 
   { 
-    ws.send(JSON.stringify(AppToken));
-    console.log("Message received");
-    /*var idsObj = JSON.parse(message);
-    var ids = message.ids;
-    var query = ids[0];
 
-    for (var i = ids.length - 1; i >= 0; i--) {
-      ids[i]
-    };*/
-
-    request(
-        {
-            url : url + "%40twitterapi",
-            headers : {
-                "Authorization" : auth
-            }
-        },
-        function (error, response, body) {
-            ws.send(JSON.stringify(error + response + body));
-            console.log(error + response + body);
-        }
-    );
-
-    // On Message
-    /*console.log("Message : "+ message);
-    wss.clients.forEach(function each(client) 
-    {
-      client.send(JSON.stringify(message));
-    });*/
   });
 
 });
-
-
-// Query twitter and send result to all
-/*setInterval(function()
-{
-    wss.clients.forEach(function each(client) 
-    {
-      client.send(JSON.stringify("New tweets"));
-    });
-}, 1000);*/
