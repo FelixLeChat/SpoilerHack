@@ -6,7 +6,7 @@ function HideSpoiler(domElementList){
     var html = domElementList[i].innerHTML;
 
     // parse HTML to find phrases
-    var phrases =  html.match(/([^.?!;:-]+[.?!;:-])/g);
+    var phrases =  html.match(/([^.,?!;:-]+[.,?!;:-])/g);
     var text = "";
 
     if(phrases != null){
@@ -25,7 +25,7 @@ function HideSpoiler(domElementList){
 
 // Basic function to hide phrases with certains words in them
 function BasicCheck(spoilerPhrase){
-    var spoilers = ["die","death","kill","revealed","turns out","ending","finale","s out that"];
+    var spoilers = [" die "," death"," kill"," revealed "," turns out "," ending "," finale"," out that "," sex"," kiss"];
 
     var spoilerHeader = "<div class=\"spoiler\">";
     var spoilerFooter = "</div>";
@@ -35,6 +35,21 @@ function BasicCheck(spoilerPhrase){
             return spoilerHeader + spoilerPhrase + spoilerFooter;
     }
     return spoilerPhrase;
+}
+
+function CheckSpoiler(phrase)
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://www.example.com/", false);
+
+    /*xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        // innerText does not let the attacker inject HTML elements.
+        console.log(xhr.responseText);
+      }
+    }*/
+    xhr.send();
+    return xhr.responseText;
 }
 
 chrome.storage.sync.get('enable', function(val){
@@ -58,14 +73,6 @@ chrome.storage.sync.get('enable', function(val){
 	}
 });
 
-/* Get request
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "http://api.example.com/data.json", true);
-xhr.onreadystatechange = function() {
-  if (xhr.readyState == 4) {
-    // innerText does not let the attacker inject HTML elements.
-    document.getElementById("resp").innerText = xhr.responseText;
-  }
-}
-xhr.send();
-*/
+
+// Check for api
+console.log(CheckSpoiler("John Snow dies."));
