@@ -23,6 +23,7 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) 
   { 
     // On Message
+    console.log("Message : "+ message);
     wss.clients.forEach(function each(client) 
     {
       client.send(JSON.stringify(message));
