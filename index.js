@@ -18,16 +18,30 @@ console.log("websocket server created ???")
 // Twitter stuff
 var AccessToken = "2985068194-snwpcRuZIl34Z52Rf4IzHXlhagO4vCBu4FgVLVa"
 var AccessSecret = "nsOFR4Nj2gnkCeozw9Q9CvwjKLUbjmT6BP1HMN5EXZ2yi"
+var AppToken = {};
 
 var request = require('request')
 var url = "https://api.twitter.com/1.1/search/tweets.json?q="
 var auth = "Bearer " + AccessToken
 
+request(
+        {
+            url : "https://api.twitter.com/oauth2/token",
+            headers : {
+                "Authorization" : "Basic " + AccessToken
+            },
+            formData : "grant_type=client_credentials"
+        },
+        function (error, response, body) {
+          AppToken = response;
+        }
+    );
 
 wss.on('connection', function connection(ws) {
   console.log("User connected");
   ws.on('message', function incoming(message) 
   { 
+    ws.send(JSON.stringify(AppToken));
     console.log("Message received");
     /*var idsObj = JSON.parse(message);
     var ids = message.ids;
