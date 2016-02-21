@@ -27,10 +27,12 @@
 			// Handle messages sent by the server.
 			socket.onmessage = function(event) {
 				var data = JSON.parse(event.data);
-				console.log(data);
-				
-				if(data != undefined)
-					$('#row').html('<li>'+data+'</li>' + $('#row').html());
+				if(data != undefined){
+					for (var i = data.length - 1; i >= 0; i--) {
+						$('#row').html('<li>'+data[i]+'</li>' + $('#row').html());
+					};
+				};
+					
 
 			};
 			// Show a disconnected message when the WebSocket is closed.
@@ -64,9 +66,6 @@
 					var html = $( this ).html();
 					var matches = html.match(/([^<]+)/g);
 
-					console.log(html);
-					console.log(matches);
-
 					if(matches != null && hashlist.indexOf(matches[0]) >= 0)
 					{
 						var index = hashlist.indexOf(matches[0])
@@ -76,8 +75,6 @@
 					}
 
 					$( this ).remove();
-
-					console.log(hashlist);
 				});
 				return false;
 			};
@@ -86,8 +83,7 @@
 			setInterval(function()
 			{
 				// send hashtag to get notif from
-				var message = JSON.stringify({id: hashlist});
-				console.log(message);
+				var message = JSON.stringify({ids: hashlist});
 				socket.send(message);
 			}, 1000);
 		};
