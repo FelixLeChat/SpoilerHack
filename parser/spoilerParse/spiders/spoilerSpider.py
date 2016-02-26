@@ -13,7 +13,7 @@ class SpoilerSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        for page in range(1,63):
+        for page in range(55,68):
             frmdata = '{"has_image": "1","selected_namespaces":["Series"],"selected_genre":[],"selected_media":[],"selected_narrative":[],"selected_topical":[],"page":'+str(page)+',"sort":"A","randomize": "0"}'
             url = 'http://tvtropes.org/ajax/browse.api.php'
             yield Request(url,method='POST',body=frmdata,headers={'Content-Type':"application/json; charset=utf-8"},callback=self.get_pages)
