@@ -8,7 +8,7 @@ def build_from_file(mldb, name, model):
 
 
 def build_endpoint(mldb, name, classifier, words_filters, feature_name, ngram_range):
-    features = "tokenize(" + feature_name + ", {splitchars:' ', quotechar:'\n', ngram_range:[" + ngram_range + "]})"
+    features = "tokenize(" + feature_name + ", {splitchars:' ', quotechar:'', ngram_range:[" + ngram_range + "]})"
     for words_filter in words_filters:
         features = words_filter + "({words:{" + features + "}})"
 

@@ -15,13 +15,12 @@ def classifier_experiment(mldb, name, training_dataset, model_file, algorithm):
 
 def classifier_training(mldb, name, training_dataset, model_file, algorithm):
     return mldb.put("/v1/procedures/" + name, {
-        "type": "classifier.training",
+        "type": "classifier.train",
         "params": {
             "trainingData": "select {* EXCLUDING(label)} as features, label from "+training_dataset,
-            "modelFileUrlPattern": "file:///mldb_data/" + model_file,
-            "experimentName": name,
-            "kfold": 2,
+            "modelFileUrl": "file:///mldb_data/" + model_file,
             "algorithm": algorithm,
+            "functionName": name,
             "mode": "boolean",
             "runOnCreation": "true",
         }
