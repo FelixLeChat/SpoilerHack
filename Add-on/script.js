@@ -36,10 +36,16 @@ function HideSpoiler(domElementList){
 				}
 
                 // If unsuccessful, check on our model
-				var data = JSON.stringify({sentence: sentence});
-				$.post('https://spoilerhack.tech/is-spoiler', data, function(data) {
-                    if(data) {
-                        domElement.innerHTML = "<div class=\"spoiler\">" + sentence + "</div>";
+                $.ajax({
+                    url:'https://spoilerhack.tech/is-spoiler',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({sentence: sentence}),
+                    dataType: 'json',
+                    success: function(data) {
+                        if(data) {
+                            domElement.innerHTML = "<div class=\"spoiler\">" + sentence + "</div>";
+                        }
                     }
                 });
 			});
