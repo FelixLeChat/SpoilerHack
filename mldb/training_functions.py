@@ -1,8 +1,8 @@
-def classifier_experiment(mldb, name, training_data, model_file, algorithm):
+def classifier_experiment(mldb, name, training_dataset, model_file, algorithm):
     return mldb.put("/v1/procedures/" + name, {
         "type": "classifier.experiment",
         "params": {
-            "trainingData": training_data,
+            "trainingData": "select {* EXCLUDING(label)} as features, label from "+training_dataset,
             "modelFileUrlPattern": "file:///mldb_data/" + model_file,
             "experimentName": name,
             "kfold": 2,
@@ -13,11 +13,11 @@ def classifier_experiment(mldb, name, training_data, model_file, algorithm):
     })
 
 
-def classifier_training(mldb, name, training_data, model_file, algorithm):
+def classifier_training(mldb, name, training_dataset, model_file, algorithm):
     return mldb.put("/v1/procedures/" + name, {
         "type": "classifier.training",
         "params": {
-            "trainingData": training_data,
+            "trainingData": "select {* EXCLUDING(label)} as features, label from "+training_dataset,
             "modelFileUrlPattern": "file:///mldb_data/" + model_file,
             "experimentName": name,
             "kfold": 2,

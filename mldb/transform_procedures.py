@@ -4,7 +4,7 @@ def baggify(mldb, name, label_name, feature_name, input_dataset, output_dataset,
         features = filter+"({words:{"+features+"}) as *}"
     features = features[:-2]  # Remove the 2 last char as it will be an extra *}
     features += 'features'
-    label = "cast(" + label_name + "as boolean) as label"
+    label = "cast(" + label_name + " as boolean) as label"
 
     return mldb.put("/v1/procedures/" + name, {
         "type": "transform",
