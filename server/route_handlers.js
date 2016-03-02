@@ -12,7 +12,7 @@ const MLDB_ADDRESS = 'http://localhost:8080';
  * of a score weirdly formated.
  */
 function predict_one(req, res, next) {
-    var param = JSON.stringify({sentence: req.body.sentence});
+    var param = JSON.stringify(req.body);
     var path = MLDB_ADDRESS+"/v1/functions/spoiler_classifier_api/application?input="+param;
     request(path, function(error, response, body) {
         var output  = JSON.parse(body).output;
