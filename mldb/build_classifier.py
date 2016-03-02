@@ -16,7 +16,7 @@ mldb.put("/v1/functions/spoiler_classifier", {
 mldb.put("/v1/functions/spoiler_classifier_api", {
     "type": "sql.expression",
     "params": {
-        "expression": "spoiler_classifier(my_stemmer({words: {filter_stopwords({words: {tokenize(sentence, {splitchars: ' ', quotechar:'', ngram_range:[1,2,3]})}})}}))",
+        "expression": "spoiler_classifier(my_stemmer({words: {filter_stopwords({words: {tokenize(sentence, {splitchars: ' ', quotechar:'', ngram_range:[1,2]})}})}}))",
         "prepared": "true"
     }
 })

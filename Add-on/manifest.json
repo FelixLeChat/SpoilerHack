@@ -19,7 +19,7 @@
   },
 
   "browser_action": {
-    "default_icon": "Spoiler.png",
+    "default_icon": "./img/Spoiler.png",
     "default_title": "Hide Spoilers"
     // Popup on chrome extention click
     //"default_popup": "popup.html"
@@ -29,12 +29,12 @@
     {
       "matches": ["http://*/*", "https://*/*"],
       "css": ["style.css"],
-      "js": ["jquery.js", "visibility.js", "script.js"]
+      "js": ["jQuery.js", "visibility.js", "script.js"]
     },
     // Script to hide the content of the page if script is enabled
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["jquery.js", "visibility.js", "startScript.js"],
+      "js": ["jQuery.js", "visibility.js", "startScript.js"],
       "run_at": "document_start"
     }
   ],

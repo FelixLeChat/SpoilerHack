@@ -5,7 +5,7 @@ module.exports = {
 };
 
 const THRESHOLD = 0.35; // This is determined after having trained the model.
-const MLDB_ADDRESS = 'http://agarant.ddns.net:8080';
+const MLDB_ADDRESS = 'http://localhost:8080';
 
 /**
  * Route handler that calls the mldb api properly and clean up the response to return true or false instead

@@ -4,7 +4,7 @@ import training_functions as trainers
 import transform_procedures as transformers
 import datasets_builder as datasets_builder
 
-MLDB_ADDRESS = "http://agarant.ddns.net:8080"
+MLDB_ADDRESS = "http://localhost:8080"
 
 mldb = Connection(MLDB_ADDRESS)
 

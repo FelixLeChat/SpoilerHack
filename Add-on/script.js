@@ -1,58 +1,49 @@
 
+
+function isInUserList(userList, phrase) {
+	userList.forEach(function(bannedWord) {
+		if(phrase.indexOf(bannedWord) > -1) {
+			return true
+		}
+	});
+	return false;
+}
+
+function findSentences(html) {
+	var sentences =  html.match(/([^.,?!;:-]+[.,?!;:-])/g);
+	sentences = String(sentences).split('<').join('').split('"').join('').split('>');
+	return sentences;
+}
+
 // parse given dom element into phrases and then hide content if they contain spoilers
 function HideSpoiler(domElementList){
-
     chrome.storage.local.get({block: []}, function (result) {
         var userList = result.block;
 
-      for ( var i = 0; i < domElementList.length; i++ ){
-        var html = domElementList[i].innerHTML;
+        $.each(domElementList, function(index, domElement) {
+			var html = domElement.innerHTML;
+			var sentences = findSentences(html);
+			if(!sentences) return;
 
-        // parse HTML to find phrases
-        var phrases =  html.match(/([^.,?!;:-]+[.,?!;:-])/g);
-		phrases = String(phrases).split('<').join('').split('"').join('').split('>');
-        var text = "";
+			sentences.forEach(function(sentence) {
+				sentence = sentence.trim();
+				if (!sentence) return;
 
-
-
-        if(phrases != null){
-            for(var j = 0; j < phrases.length; j++){
-		  		var spoilerPhrase = phrases[j].trim();
-				if(spoilerPhrase){
-			  		$.get('http://localhost:8080/v1/functions/princess_classifier_api/application?input={"x":"'+spoilerPhrase+'"}', function(val) {
-
-	                // TODO : Check for spoiler in phrase
-
-	                var blockPhrase = false;
-
-	                // Check for user blocked list
-	                for(var k=0; k < userList.length; k++){
-	                    if(spoilerPhrase.indexOf(userList[k]) > -1)
-	                    {
-	                        text += "<div class=\"spoiler\">" + spoilerPhrase + "</div>";
-	                        blockPhrase = true;
-	                        k = userList.length;
-	                    }
-	                }
-					if(val != undefined && val.output.spoiler[0][1] > -0.2637063264846802 && !blockPhrase) {
-						text += "<div class=\"spoiler\">" + spoilerPhrase + "</div>";
-						blockPhrase = true;
-						alert(text)
-					}
-
-
-	                if(!blockPhrase){
-	                    text += BasicCheck(spoilerPhrase);
-					}
-
-
-		            if(text)
-	    	            domElementList[i].innerHTML = text;
-					});
+				// Check in the user blocked list first
+				if (isInUserList(userList, sentence)) {
+                    domElement.innerHTML = "<div class=\"spoiler\">" + sentence + "</div>";
+                    return;
 				}
-			}
-		}
-		}
+
+                // If unsuccessful, check on our model
+				var data = JSON.stringify({sentence: sentence});
+				$.post('https://spoilerhack.tech/is-spoiler', data, function(data) {
+                    if(data) {
+                        domElement.innerHTML = "<div class=\"spoiler\">" + sentence + "</div>";
+                    }
+                });
+			});
+		});
 	});
 }
 
@@ -75,18 +66,8 @@ function BasicCheck(spoilerPhrase){
 				//}
 			//}
 		}
-		
-
     }
     return spoilerPhrase;
-}
-
-function CheckSpoiler(phrase)
-{
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://www.example.com/", false);
-    xhr.send();
-    return xhr.responseText;
 }
 
 chrome.storage.sync.get('enable', function(val){

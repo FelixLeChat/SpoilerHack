@@ -1,9 +1,14 @@
 var restify = require('restify');
+var fs = require('fs');
 var handlers = require('./route_handlers.js');
 
-const DEFAULT_PORT = 3000;
+const DEFAULT_PORT = 8989;
 
-var server = restify.createServer();
+var server = restify.createServer({
+    certificate: fs.readFileSync('./certs/fullchain.pem'),
+    key: fs.readFileSync("./certs/privkey.pem"),
+    name: 'spoilerhax'
+});
 server.use(restify.bodyParser()); // At the moment, we only need to parse the body
 //server.use(restify.queryParser());
 server.use(restify.gzipResponse()); // why not
