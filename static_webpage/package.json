@@ -1,0 +1,14 @@
+{
+  "version": "0.1.5",
+  "description": "A sample Node.js app using Express 4",
+  "main": "index.js",
+  "repository": "https://github.com/FelixLeChat/SpoilerHack",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "4.13.3"
+  },
+  "license": "MIT"
+}

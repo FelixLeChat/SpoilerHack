@@ -1,6 +1,6 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<script type="text/javascript" src="script/jquery.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script>
 			// parse given dom element into phrases and then hide content if they contain spoilers
 		function HideSpoiler(domElementList){
@@ -138,19 +138,17 @@
 		
 	</script>
 </head>
-
-<div id="page-wrapper">
-	<h1>Twitter Spoiler Alert</h1>
-
-
-	<form id="message-form" action="#" method="post">
-		<input type="text" id="message" placeholder="Write the # to watch" required>
-		<button type="submit">Add</button>
-	</form>
-
-	<div id="hashtagList"></div>
-</div>
-<div id="page-wrapper">
-	<h2>Spoilers :</h2>
-	<ul id="row"></ul>
-</div>
+<body>
+	<div class="page-wrapper">
+		<h1>Twitter Spoiler Alert</h1>
+		<form id="message-form" action="#" method="post">
+			<input type="text" id="message" placeholder="Write the # to watch" required>
+			<button type="submit">Add</button>
+		</form>
+		<div id="hashtagList"></div>
+	</div>
+	<div class="page-wrapper">
+		<h2>Spoilers :</h2>
+		<ul id="row"></ul>
+	</div>
+</body>

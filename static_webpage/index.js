@@ -1,18 +1,14 @@
-var WebSocketServer = require("ws").Server
-var http = require("http")
-var express = require("express")
-var app = express()
-var port = process.env.PORT || 5000
+var http = require("http");
+var express = require("express");
+var app = express();
+var port = process.env.PORT || 5000;
 
-app.use(express.static(__dirname + "/"))
+app.use(express.static(__dirname + "/"));
 
-var server = http.createServer(app)
-server.listen(port)
+var server = http.createServer(app);
+server.listen(port);
+console.log("http server listening on %d", port);
 
-console.log("http server listening on %d", port)
-
-var wss = new WebSocketServer({server: server})
-console.log("websocket server created ???")
 
 // Twitter stuff
 //var Twitter = require('twitter');
@@ -29,12 +25,3 @@ client.get('search/tweets', {q: 'node.js'}, function(error, tweets, response){
    };
 });*/
 
-
-wss.on('connection', function connection(ws) {
-  console.log("User connected");
-  ws.on('message', function incoming(message) 
-  { 
-
-  });
-
-});

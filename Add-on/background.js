@@ -1,5 +1,5 @@
-var EnabledImage = "Spoiler.png";
-var DisabledImage = "SpoilerDis.png";
+var EnabledImage = "./img/Spoiler.png";
+var DisabledImage = "./img/SpoilerDis.png";
 
 function updateIcon() {
 

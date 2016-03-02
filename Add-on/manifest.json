@@ -40,9 +40,9 @@
   ],
 
   "icons": {
-    "16": "SP16.png",
-    "48": "SP48.png",
-    "128": "SP128.png" 
+    "16": "./img/SP16.png",
+    "48": "./img/SP48.png",
+    "128": "./img/SP128.png"
   },
 
   "manifest_version": 2

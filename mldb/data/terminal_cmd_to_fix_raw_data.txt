@@ -1,0 +1,9 @@
+
+/// Finds " alone on a line, append it to the previous line and delete the line ///
+sed -e :a -e '$!N;s/\n"/"/;ta' -e 'P;D' <input_file> > <output_file>
+
+/// Find . alone on a line, append it to the previous line and delete the line ///
+sed -e :a -e '$!N;s/\n\.//;ta' -e 'P;D' <input_file> > <output_file>
+
+/// Shuffles all the lines in a file ///
+shuf <input_file> > <output_file>

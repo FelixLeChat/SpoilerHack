@@ -5,3 +5,7 @@ node_modules
 .env
 Dockerfile
 docker-compose.yml
+.idea
+node_modules
+**/node_modules
+**/**/node_modules
