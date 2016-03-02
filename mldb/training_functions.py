@@ -5,7 +5,7 @@ def classifier_experiment(mldb, name, training_dataset, model_file, algorithm):
             "trainingData": "select {* EXCLUDING(label)} as features, label from "+training_dataset,
             "modelFileUrlPattern": "file:///mldb_data/" + model_file,
             "experimentName": name,
-            "kfold": 2,
+            "kfold": 1,
             "algorithm": algorithm,
             "mode": "boolean",
             "runOnCreation": "true",

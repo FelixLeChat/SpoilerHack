@@ -30,7 +30,7 @@ transformers.baggify(mldb, 'spoiler_bag_of_word', LABEL_COL, FEATURE_COL, spoile
 """ Train models with the transformed datasets """
 spoilers_balanced_fn = 'spoilers_classifier'
 spoilers_balanced_md = 'model_trained.cls'
-md = trainers.classifier_training(mldb, spoilers_balanced_fn, spoilers_balanced_ds_ts, spoilers_balanced_md, 'bbdt')
+md = trainers.classifier_experiment(mldb, spoilers_balanced_fn, spoilers_balanced_ds_ts, spoilers_balanced_md, 'bbdt')
 #
 # auc = md.json()["status"]["firstRun"]["status"]["folds"][0]["results"]["auc"]
 # print "\nArea under ROC curve = %0.4f\n" % auc

@@ -15,7 +15,7 @@ def build_endpoint(mldb, name, classifier, words_filters, feature_name, ngram_ra
     mldb.put("/v1/functions/" + name, {
         "type": "sql.expression",
         "params": {
-            "expression": classifier + "(" + features + ")",
+            "expression": classifier + "(" + features + " as features)",
             "prepared": "true"
         }
     })
